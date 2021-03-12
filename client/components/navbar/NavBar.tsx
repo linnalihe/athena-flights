@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 
-import {
-  AppBar,
-  Button,
-  Toolbar,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+import NavBarButtons from './NavBarButtons';
+import { DrawerContext } from '../../ contexts';
+import Drawer from './Drawer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       boxShadow: 'none',
+      zIndex: 1400,
     },
     toolbar: {
       maxWidth: theme.breakpoints.values.desktop,
@@ -42,25 +41,33 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('tablet'));
+
+  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+  const drawerValue = useMemo(() => ({ drawerIsOpen, setDrawerIsOpen }), [
+    drawerIsOpen,
+    setDrawerIsOpen,
+  ]);
+
+  const buttonsContent = [
+    { text: 'Home', link: '/' },
+    { text: 'Explore', link: '/explore' },
+    { text: 'Sign In', link: '/signin' },
+  ];
 
   return (
-    <AppBar className={classes.appbar}>
-      <Toolbar className={classes.toolbar}>
-        <div className={classes.logo}>
-          <Link href='/'>
-            <a className={classes.logoText}>Athena Flights</a>
-          </Link>
-        </div>
-        <Button
-          variant='contained'
-          color={isSmallScreen ? 'primary' : 'secondary'}
-        >
-          Sign In
-        </Button>
-      </Toolbar>
-    </AppBar>
+    <DrawerContext.Provider value={drawerValue}>
+      <AppBar className={classes.appbar}>
+        <Toolbar className={classes.toolbar}>
+          <div className={classes.logo}>
+            <Link href='/'>
+              <a className={classes.logoText}>Athena Flights</a>
+            </Link>
+          </div>
+          <NavBarButtons buttonsContent={buttonsContent} />
+        </Toolbar>
+      </AppBar>
+      <Drawer buttonsContent={buttonsContent} />
+    </DrawerContext.Provider>
   );
 };
 
