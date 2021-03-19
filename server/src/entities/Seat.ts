@@ -5,7 +5,7 @@ import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
 @Entity()
 export class Seat extends BaseEntity {
   @Field((_type) => ID)
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
   id: number;
 
   @Field()

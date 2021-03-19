@@ -1,12 +1,22 @@
 import { Arg, Resolver, Query, Ctx } from 'type-graphql';
-// import { Seat } from '../entities/Seat';
+import { Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import { Service } from 'typedi';
+
+import { Seat } from '../entities/Seat';
 import { Launch, LaunchConnection } from './types/launch';
 import { Context } from '../types';
 import paginateResults from '../utils/paginateResults';
 import { LaunchesInput } from './types/launch-input';
+import generateBookingInfo from '../utils/generateBookingInfo';
 
 @Resolver()
+@Service()
 export class LaunchResolver {
+  constructor(
+    @InjectRepository(Seat) private readonly seatRepository: Repository<Seat>
+  ) {}
+
   @Query(() => LaunchConnection)
   async launches(
     @Ctx() { dataSources }: Context,
@@ -19,13 +29,14 @@ export class LaunchResolver {
 
     // TODO: filter by year and/or destination
 
-    const launches = paginateResults({
+    let launches = paginateResults({
       cursor,
       pageSize,
       results: allLaunches,
     });
 
     // TODO: add destination, departure and arrival dates, and remaining seats
+    launches = await generateBookingInfo(launches, this.seatRepository);
 
     return {
       launches,

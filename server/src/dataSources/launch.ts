@@ -12,6 +12,7 @@ export default class LaunchAPI extends RESTDataSource {
       id: launch.flight_number || 0,
       cursor: launch.flight_number, // use flight number instead of launch_date_unix, which is not unique
       site: launch.launch_site && launch.launch_site.site_name,
+      departureDate: new Date(launch.launch_date_utc),
       mission: {
         name: launch.mission_name,
         missionPatchSmall: launch.links.mission_patch_small,

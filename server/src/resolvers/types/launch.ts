@@ -57,6 +57,15 @@ export class Launch {
   @Field((_type) => Int, { nullable: true })
   cursor?: number;
 
-  @Field({ nullable: true })
+  @Field((_type) => Int, { nullable: true })
   remainingSeats?: number;
+
+  @Field({ nullable: true })
+  destination?: string;
+
+  @Field({ nullable: true })
+  departureDate?: Date;
+
+  @Field({ nullable: true })
+  returnDate?: Date;
 }
