@@ -2,12 +2,16 @@ import 'reflect-metadata';
 import 'dotenv-safe/config';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, useContainer } from 'typeorm';
+import { Container } from 'typedi';
 
 import { Seat } from './entities/Seat';
 
 import { LaunchResolver } from './resolvers/launch';
 import LaunchAPI from './dataSources/launch';
+
+// register 3rd party IOC container
+useContainer(Container);
 
 const main = async () => {
   await createConnection({
@@ -25,6 +29,7 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [LaunchResolver],
+      container: Container,
       validate: false,
     }),
     dataSources,

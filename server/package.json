@@ -28,6 +28,8 @@
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.31"
+    "typedi": "^0.10.0",
+    "typeorm": "^0.2.31",
+    "typeorm-typedi-extensions": "^0.4.1"
   }
 }
