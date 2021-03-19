@@ -1,10 +1,11 @@
+import { DEFAULT_PAGE_SIZE } from '../../constants';
 import { Field, InputType, Int } from 'type-graphql';
 
 @InputType()
 export class LaunchesInput {
   @Field(() => Int, {
     nullable: true,
-    defaultValue: 20,
+    defaultValue: DEFAULT_PAGE_SIZE,
     description: 'Number of results to return. Must be >= 1.',
   })
   pageSize?: number;

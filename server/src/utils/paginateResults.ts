@@ -1,3 +1,5 @@
+import { DEFAULT_PAGE_SIZE } from '../constants';
+
 interface PaginateResultsInput {
   cursor?: number;
   pageSize?: number;
@@ -6,7 +8,7 @@ interface PaginateResultsInput {
 
 const paginateResults = ({
   cursor,
-  pageSize = 20,
+  pageSize = DEFAULT_PAGE_SIZE,
   results,
 }: PaginateResultsInput) => {
   if (pageSize < 1) {
