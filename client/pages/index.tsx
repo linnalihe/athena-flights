@@ -8,14 +8,16 @@ import {
   TextField,
 } from '@material-ui/core';
 import Layout from '../components/Layout';
+import Canvas from '../components/Canvas';
 
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
-      marginTop: '100px',
+      margin: 'auto',
       padding: '25px',
       border: '1px solid gray',
       borderRadius: '5px',
+      color: 'white',
     },
     input: {
       paddingRight: '5px',
@@ -28,6 +30,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
+      <Canvas />
       <div className={classes.container}>
         <h1>Book your flight to the stars 🚀</h1>
         <label className={classes.input}>From</label>

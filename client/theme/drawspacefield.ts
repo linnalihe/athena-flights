@@ -1,33 +1,35 @@
-import React, { useRef, useState, useEffect } from 'react';
 import { vec3 } from 'gl-matrix';
 
-const drawspacefield = (canvas, ctx) => {
-  var flr = Math.floor;
+interface CanvasInput {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+}
 
+export const drawspacefield: CanvasInput = (
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D
+) => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
 
-  var halfw = canvas.width / 2,
-    halfh = canvas.height / 2,
-    step = 2,
-    warpZ = 12,
-    speed = 0.075;
-
-  var ctx = canvas.getContext('2d');
+  let halfw: number = canvas.width / 2;
+  let halfh: number = canvas.height / 2;
+  let warpZ: number = 12;
+  let speed: number = 0.075;
 
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  function rnd(num1, num2) {
-    return flr(Math.random() * num2 * 2) + num1;
+  function rnd(num1: number, num2: number) {
+    return Math.floor(Math.random() * num2 * 2) + num1;
   }
 
   function getColor() {
     return 'hsla(200,100%, ' + rnd(50, 100) + '%, 1)';
   }
 
-  var star = function () {
-    var v = vec3.fromValues(
+  let star = function () {
+    let v = vec3.fromValues(
       rnd(0 - halfw, halfw),
       rnd(0 - halfh, halfh),
       rnd(1, warpZ)
@@ -55,15 +57,15 @@ const drawspacefield = (canvas, ctx) => {
       return vec3.fromValues(0, 0, 0 - speed);
     };
 
-    var vel = this.calcVel();
+    let vel = this.calcVel();
 
     this.draw = function () {
       vel = this.calcVel();
       v = vec3.add(vec3.create(), v, vel);
-      var x = v[0] / v[2];
-      var y = v[1] / v[2];
-      var x2 = v[0] / (v[2] + speed * 0.5);
-      var y2 = v[1] / (v[2] + speed * 0.5);
+      let x = v[0] / v[2];
+      let y = v[1] / v[2];
+      let x2 = v[0] / (v[2] + speed * 0.5);
+      let y2 = v[1] / (v[2] + speed * 0.5);
 
       ctx.strokeStyle = this.color;
       ctx.beginPath();
@@ -77,13 +79,13 @@ const drawspacefield = (canvas, ctx) => {
     };
   };
 
-  var starfield = function () {
-    var numOfStars = 250;
+  let starfield = function () {
+    let numOfStars = 250;
 
-    var stars = [];
+    let stars = [];
 
     function _init() {
-      for (var i = 0, len = numOfStars; i < len; i++) {
+      for (let i = 0, len = numOfStars; i < len; i++) {
         stars.push(new star());
       }
     }
@@ -93,22 +95,17 @@ const drawspacefield = (canvas, ctx) => {
     this.draw = function () {
       ctx.translate(halfw, halfh);
 
-      for (var i = 0, len = stars.length; i < len; i++) {
-        var currentStar = stars[i];
+      for (let i = 0, len = stars.length; i < len; i++) {
+        let currentStar = stars[i];
 
         currentStar.draw();
       }
     };
   };
 
-  var mStarField = new starfield();
+  let mStarField = new starfield();
 
   function draw() {
-    // make 5 seconds
-    var millSeconds = 1000 * 10;
-
-    var currentTime = new Date();
-
     speed = 0.025;
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -122,30 +119,3 @@ const drawspacefield = (canvas, ctx) => {
 
   draw();
 };
-
-export const Spacefield = () => {
-  const canvasRef = useRef(null);
-  let canvas;
-  let ctx;
-
-  useEffect(() => {
-    if (canvasRef && canvasRef.current) {
-      canvas = canvasRef.current;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx = canvas.getContext('2d');
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      drawspacefield(canvas, ctx);
-    }
-  }, [canvasRef]);
-
-  return (
-    <div>
-      <canvas ref={canvasRef} />
-    </div>
-  );
-};
-
-export default Spacefield;
