@@ -12,7 +12,7 @@ import Layout from '../components/Layout';
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
-      margin: 'auto',
+      marginTop: '100px',
       padding: '25px',
       border: '1px solid gray',
       borderRadius: '5px',
