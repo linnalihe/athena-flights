@@ -34,7 +34,6 @@ export const drawspacefield: CanvasInput = (
       rnd(0 - halfh, halfh),
       rnd(1, warpZ)
     );
-
     this.x = v[0];
     this.y = v[1];
     this.z = v[2];

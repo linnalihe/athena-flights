@@ -13,6 +13,10 @@ const canvasStyle: CSSProperties = {
 
 const Canvas = ({ width, height }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [windowDimension, setWindowDimension] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -20,17 +24,32 @@ const Canvas = ({ width, height }: CanvasProps) => {
     }
 
     const canvas: HTMLCanvasElement = canvasRef.current;
-    canvas.width = width ? width : window.innerWidth;
-    canvas.height = height ? height : window.innerHeight;
+    canvas.width = width ? width : canvas.width;
+    canvas.height = height ? height : canvas.height;
     const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       drawspacefield(canvas, ctx);
     }
-  }, [canvasRef]);
+    return;
+  }, [canvasRef, windowDimension.width, windowDimension.height]);
 
-  return <canvas ref={canvasRef} style={canvasStyle} />;
+  useEffect(() => {
+    setWindowDimension({
+      width: window.innerWidth,
+      height: window.innerHeight - 56,
+    });
+  }, [windowDimension.width, windowDimension.height]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={canvasStyle}
+      width={windowDimension.width}
+      height={windowDimension.height}
+    />
+  );
 };
 
 export default Canvas;

@@ -1,12 +1,5 @@
 import FlightTakeoff from '@material-ui/icons/FlightTakeoff';
-import {
-  createStyles,
-  CssBaseline,
-  makeStyles,
-  Input,
-  Button,
-  TextField,
-} from '@material-ui/core';
+import { createStyles, makeStyles, Input, Button } from '@material-ui/core';
 import Layout from '../components/Layout';
 import Canvas from '../components/Canvas';
 
@@ -18,9 +11,12 @@ const useStyles = makeStyles(() =>
       border: '1px solid gray',
       borderRadius: '5px',
       color: 'white',
+      backgroundColor: 'rgba(255,255,255,.05)',
     },
     input: {
       paddingRight: '5px',
+      borderBottom: 'solid 2px white',
+      color: 'white',
     },
   })
 );
