@@ -7,6 +7,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import NavBarButtons from './NavBarButtons';
 import { DrawerContext } from '../../ contexts';
 import Drawer from './Drawer';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const NavBar = () => {
+  const [session, loading] = useSession();
   const classes = useStyles();
 
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
@@ -51,8 +53,13 @@ const NavBar = () => {
   const buttonsContent = [
     { text: 'Home', link: '/' },
     { text: 'Explore', link: '/explore' },
-    { text: 'Sign In', link: '/signin' },
+    { text: 'Sign In', link: '/api/auth/signin' },
   ];
+
+  if (session) {
+    buttonsContent[2].text = 'Sign Out';
+    buttonsContent[2].link = '/api/auth/signout';
+  }
 
   return (
     <DrawerContext.Provider value={drawerValue}>

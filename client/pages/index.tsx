@@ -31,21 +31,10 @@ const IndexPage = () => {
     <Layout>
       <Canvas />
       <div className={classes.container}>
-        {!session && (
-          <>
-            {' '}
-            Not signed in <br />
-            <button onClick={() => signIn()}>Sign In</button>{' '}
-          </>
-        )}
-        {session && (
-          <>
-            {' '}
-            Signed in as {session.user.email} <br />
-            <button onClick={() => signOut()}>Sign Out</button>{' '}
-          </>
-        )}
-        <h1>Book your flight to the stars 🚀</h1>
+        <h1>
+          {session && `Hi, ${session.user.name.split(' ')[0]}!`} Book your
+          flight to the stars 🚀
+        </h1>
         <label className={classes.input}>From</label>
         <Input type='text' className={classes.input} />
         <label className={classes.input}>To</label>
