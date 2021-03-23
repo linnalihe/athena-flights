@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { Provider } from 'next-auth/client';
 
 import '../theme/styles.css';
 import { theme } from '../theme';
@@ -15,9 +16,11 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <Provider session={pageProps.session}>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </Provider>
   );
 };
 

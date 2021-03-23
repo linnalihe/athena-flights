@@ -2,6 +2,8 @@ import FlightTakeoff from '@material-ui/icons/FlightTakeoff';
 import { createStyles, makeStyles, Input, Button } from '@material-ui/core';
 import Layout from '../components/Layout';
 import Canvas from '../components/Canvas';
+import React from 'react';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -22,12 +24,27 @@ const useStyles = makeStyles(() =>
 );
 
 const IndexPage = () => {
+  const [session, loading] = useSession();
   const classes = useStyles();
 
   return (
     <Layout>
       <Canvas />
       <div className={classes.container}>
+        {!session && (
+          <>
+            {' '}
+            Not signed in <br />
+            <button onClick={() => signIn()}>Sign In</button>{' '}
+          </>
+        )}
+        {session && (
+          <>
+            {' '}
+            Signed in as {session.user.email} <br />
+            <button onClick={() => signOut()}>Sign Out</button>{' '}
+          </>
+        )}
         <h1>Book your flight to the stars 🚀</h1>
         <label className={classes.input}>From</label>
         <Input type='text' className={classes.input} />
