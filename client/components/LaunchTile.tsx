@@ -13,6 +13,7 @@ import formatDate from '../utils/format-date';
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
+    margin: '1rem',
   },
   media: {
     height: 140,
@@ -52,9 +53,6 @@ const LaunchTile = ({ launch }: { launch: Launch }) => {
           </Typography>
           <Typography variant='h6' component='div'>
             {launch.rocket?.name}
-          </Typography>
-          <Typography variant='body2' component='p'>
-            <strong>{launch.destination}</strong>
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p'>
             <span>{formatDate(launch.departureDate as string)}</span>
