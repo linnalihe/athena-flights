@@ -4,6 +4,7 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
+  Reference,
 } from '@apollo/client';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
@@ -33,10 +34,35 @@ function createApolloClient() {
     (httpLink as unknown) as ApolloLink,
   ]);
 
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          launches: {
+            keyArgs: false,
+            merge(existing, incoming) {
+              let launches: Reference[] = [];
+              if (existing && existing.launches) {
+                launches = launches.concat(existing.launches);
+              }
+              if (incoming && incoming.launches) {
+                launches = launches.concat(incoming.launches);
+              }
+              return {
+                ...incoming,
+                launches,
+              };
+            },
+          },
+        },
+      },
+    },
+  });
+
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: link as any,
-    cache: new InMemoryCache(),
+    cache,
   });
 }
 

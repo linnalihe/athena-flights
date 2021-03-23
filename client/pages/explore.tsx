@@ -1,22 +1,43 @@
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import LaunchTile from '../components/LaunchTile';
 
+import {
+  Button,
+  CircularProgress,
+  createStyles,
+  makeStyles,
+} from '@material-ui/core';
+
+import LaunchTilesContainer from '../components/LaunchTilesContainer';
 import Layout from '../components/Layout';
 import { GET_LAUNCHES } from '../graphql/queries/getLaunches';
-import { Launch, LaunchConnection, LaunchesInput } from '../interfaces';
+import { LaunchConnection, LaunchesInput } from '../interfaces';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    viewMore: {
+      marginBottom: '1rem',
+    },
+  })
+);
 
 const Explore = () => {
+  const classes = useStyles();
+  const pageSize = 10;
+
   const launchesInput: LaunchesInput = {
-    pageSize: 2,
+    pageSize,
   };
 
-  const { data, loading, error } = useQuery(GET_LAUNCHES, {
+  const { data, loading, error, fetchMore } = useQuery(GET_LAUNCHES, {
     variables: { input: launchesInput },
   });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!data) return <p>Not found</p>;
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  if (loading) return <Layout>Loading...</Layout>;
+  if (error) return <Layout>Error: {error.message}</Layout>;
+  if (!data) return <Layout>Not found</Layout>;
 
   const launchConnection: LaunchConnection = data.launches;
   const launches = launchConnection.launches;
@@ -25,9 +46,31 @@ const Explore = () => {
 
   return (
     <Layout title='Explore'>
-      {launches &&
-        launches.map((launch: Launch) => (
-          <LaunchTile key={launch.id} launch={launch} />
+      <LaunchTilesContainer launches={launches} />
+      {data.launches &&
+        data.launches.hasMore &&
+        (isLoadingMore ? (
+          <CircularProgress color='primary' className={classes.viewMore} />
+        ) : (
+          <Button
+            className={classes.viewMore}
+            color='primary'
+            variant='contained'
+            onClick={async () => {
+              setIsLoadingMore(true);
+              await fetchMore({
+                variables: {
+                  input: {
+                    pageSize,
+                    cursor: data.launches.cursor,
+                  },
+                },
+              });
+              setIsLoadingMore(false);
+            }}
+          >
+            View More
+          </Button>
         ))}
     </Layout>
   );
