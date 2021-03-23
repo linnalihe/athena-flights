@@ -33,6 +33,9 @@ const muiTheme = createMuiTheme({
       desktop: 1921,
     },
   },
+  palette: {
+    mode: 'dark',
+  },
 });
 
 export default muiTheme;
