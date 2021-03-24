@@ -41,12 +41,14 @@ export class LaunchResolver {
 
     const allLaunches: Launch[] = await dataSources.launchAPI.getAllLaunches();
     let launches = allLaunches;
+    let lastLaunch = allLaunches[allLaunches.length - 1];
 
     // filterResults needs launch.destination and launch.departureDate to work,
     // so those parameters need to be generated beforehand with generateBookingInfo
     if (typeof filter !== 'undefined') {
       launches = await generateBookingInfo(launches, this.seatRepository);
       launches = filterResults(launches, filter);
+      lastLaunch = launches[launches.length - 1];
     }
 
     launches = paginateResults({
@@ -67,8 +69,7 @@ export class LaunchResolver {
       // if the cursor of the end of the paginated results is the same as the
       // last item in _all_ results, then there are no more results after this
       hasMore: launches.length
-        ? launches[launches.length - 1].cursor !==
-          allLaunches[allLaunches.length - 1].cursor
+        ? launches[launches.length - 1].cursor !== lastLaunch.cursor
         : false,
     };
   }

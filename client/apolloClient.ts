@@ -39,7 +39,7 @@ function createApolloClient() {
       Query: {
         fields: {
           launches: {
-            keyArgs: false,
+            keyArgs: ['filter'],
             merge(existing, incoming) {
               let launches: Reference[] = [];
               if (existing && existing.launches) {

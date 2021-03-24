@@ -4,9 +4,15 @@ export interface ButtonContent {
   text: string;
 }
 
+export interface Filter {
+  destination?: string;
+  priorToDate?: string;
+}
+
 export interface LaunchesInput {
   pageSize?: number;
   cursor?: number;
+  filter?: Filter;
 }
 
 export interface Mission {
