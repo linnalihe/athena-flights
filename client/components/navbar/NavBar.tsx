@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       boxShadow: 'none',
       zIndex: 1400,
+      backgroundColor: 'rgba(0,0,0,0)',
     },
     toolbar: {
       maxWidth: theme.breakpoints.values.desktop,
