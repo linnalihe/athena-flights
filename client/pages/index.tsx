@@ -1,9 +1,9 @@
-import FlightTakeoff from '@material-ui/icons/FlightTakeoff';
-import { createStyles, makeStyles, Input, Button } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 import Layout from '../components/Layout';
 import Canvas from '../components/Canvas';
+import Form from '../components/Form';
 import React from 'react';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -14,11 +14,6 @@ const useStyles = makeStyles(() =>
       borderRadius: '5px',
       color: 'white',
       backgroundColor: 'rgba(255,255,255,.05)',
-    },
-    input: {
-      paddingRight: '5px',
-      borderBottom: 'solid 2px white',
-      color: 'white',
     },
   })
 );
@@ -35,13 +30,14 @@ const IndexPage = () => {
           {session && `Hi, ${session.user.name.split(' ')[0]}!`} Book your
           flight to the stars 🚀
         </h1>
-        <label className={classes.input}>From</label>
+        <Form />
+        {/* <label className={classes.input}>From</label>
         <Input type='text' className={classes.input} />
         <label className={classes.input}>To</label>
         <Input className={classes.input} />
         <label className={classes.input}>Date</label>
         <Input type='date' className={classes.input} />
-        <Button startIcon={<FlightTakeoff />}>Search</Button>
+        <Button startIcon={<FlightTakeoff />}>Search</Button> */}
       </div>
     </Layout>
   );
