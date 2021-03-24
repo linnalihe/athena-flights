@@ -9,6 +9,7 @@ import { Context } from '../types';
 import paginateResults from '../utils/paginateResults';
 import { LaunchesInput } from './types/launch-input';
 import generateBookingInfo from '../utils/generateBookingInfo';
+import filterResults from '../utils/filterResults';
 
 @Resolver()
 @Service()
@@ -23,20 +24,29 @@ export class LaunchResolver {
 
     @Arg('input') launchInput: LaunchesInput
   ): Promise<LaunchConnection> {
-    const { pageSize, cursor } = launchInput;
+    const { pageSize, cursor, filter } = launchInput;
 
     const allLaunches: Launch[] = await dataSources.launchAPI.getAllLaunches();
+    let launches = allLaunches;
 
-    // TODO: filter by year and/or destination
+    // filterResults needs launch.destination and launch.departureDate to work,
+    // so those parameters need to be generated beforehand with generateBookingInfo
+    if (typeof filter !== 'undefined') {
+      launches = await generateBookingInfo(launches, this.seatRepository);
+      launches = filterResults(launches, filter);
+    }
 
-    let launches = paginateResults({
+    launches = paginateResults({
       cursor,
       pageSize,
-      results: allLaunches,
+      results: launches,
     });
 
-    // TODO: add destination, departure and arrival dates, and remaining seats
-    launches = await generateBookingInfo(launches, this.seatRepository);
+    // if no filter is given, we can generate booking info for only paginated launches
+    // instead of all launches
+    if (typeof filter === 'undefined') {
+      launches = await generateBookingInfo(launches, this.seatRepository);
+    }
 
     return {
       launches,

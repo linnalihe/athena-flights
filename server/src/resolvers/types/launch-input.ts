@@ -2,6 +2,19 @@ import { DEFAULT_PAGE_SIZE } from '../../constants';
 import { Field, InputType, Int } from 'type-graphql';
 
 @InputType()
+export class Filter {
+  @Field({ nullable: true })
+  destination?: string;
+
+  @Field({
+    nullable: true,
+    description:
+      'Filter for flights that depart earlier than or during this given year.',
+  })
+  priorToDate?: string;
+}
+
+@InputType()
 export class LaunchesInput {
   @Field(() => Int, {
     nullable: true,
@@ -15,4 +28,9 @@ export class LaunchesInput {
     description: 'Results will be returned _after_ this cursor',
   })
   cursor?: number;
+
+  @Field({
+    nullable: true,
+  })
+  filter?: Filter;
 }

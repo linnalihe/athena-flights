@@ -54,8 +54,8 @@ export class Launch {
   @Field({ nullable: true })
   rocket?: Rocket;
 
-  @Field((_type) => Int, { nullable: true })
-  cursor?: number;
+  @Field((_type) => Int)
+  cursor: number;
 
   @Field((_type) => Int, { nullable: true })
   remainingSeats?: number;
