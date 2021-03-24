@@ -12,6 +12,8 @@ export const drawspacefield: CanvasInput = (
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
 
+  let drawFlag: boolean = true;
+
   let halfw: number = canvas.width / 2;
   let halfh: number = canvas.height / 2;
   let warpZ: number = 12;
@@ -104,6 +106,10 @@ export const drawspacefield: CanvasInput = (
 
   let mStarField = new starfield();
 
+  function setDrawFlag() {
+    drawFlag = false;
+  }
+
   function draw() {
     speed = 0.025;
 
@@ -113,8 +119,11 @@ export const drawspacefield: CanvasInput = (
 
     mStarField.draw();
 
-    window.requestAnimationFrame(draw);
+    if (drawFlag) {
+      window.requestAnimationFrame(draw);
+    }
   }
-
   draw();
+
+  return setDrawFlag;
 };

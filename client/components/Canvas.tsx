@@ -18,38 +18,39 @@ const Canvas = ({ width, height }: CanvasProps) => {
     height: 0,
   });
 
+  const handleResize = () => {
+    setWindowDimension({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
+
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
 
     const canvas: HTMLCanvasElement = canvasRef.current;
-    canvas.width = width ? width : canvas.width;
-    canvas.height = height ? height : canvas.height;
+    canvas.width = width ? width : windowDimension.width;
+    canvas.height = height ? height : windowDimension.height;
     const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      drawspacefield(canvas, ctx);
+      return drawspacefield(canvas, ctx);
     }
-    return;
-  }, [canvasRef, windowDimension.width, windowDimension.height]);
+  }, [canvasRef, windowDimension]);
 
   useEffect(() => {
-    setWindowDimension({
-      width: window.innerWidth,
-      height: window.innerHeight - 56,
-    });
-  }, [windowDimension.width, windowDimension.height]);
+    if (window && windowDimension.width === 0) {
+      handleResize();
+    }
+    window.addEventListener('resize', handleResize);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={canvasStyle}
-      width={windowDimension.width}
-      height={windowDimension.height}
-    />
-  );
+    return () => window.removeEventListener('resize', handleResize);
+  });
+
+  return <canvas ref={canvasRef} style={canvasStyle} />;
 };
 
 export default Canvas;

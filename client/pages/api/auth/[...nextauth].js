@@ -34,14 +34,18 @@ const options = {
     },
     // Providers.Email({
     //   server: {
-    //     host: '',
-    //     port: '',
+    //     port: 465,
+    //     host: 'smtp.gmail.com',
+    //     secure: true,
     //     auth: {
-    //       user: '',
-    //       pass: '',
+    //       user: process.env.EMAIL_USERNAME,
+    //       pass: process.env.EMAIL_PASSWORD,
     //     },
+    //     tls:{
+    //       rejectUnauthorized: false,
+    //     }
     //   },
-    //   form: '',
+    //   from: process.env.EMAIL_FROM,
     // }),
   ],
   // debug: process.env.NODE_ENV === 'development',
@@ -49,7 +53,7 @@ const options = {
   // jwt: {
   //   secret: process.env.JWT_SECRET,
   // },
-  // database: process.env.DB_URL
+  // database: process.env.DATABASE_URL
 };
 
 export default (req, res) => NextAuth(req, res, options);

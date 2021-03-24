@@ -35,6 +35,7 @@ const Explore = () => {
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  console.log(data);
   if (loading) return <Layout>Loading...</Layout>;
   if (error) return <Layout>Error: {error.message}</Layout>;
   if (!data) return <Layout>Not found</Layout>;
@@ -42,7 +43,7 @@ const Explore = () => {
   const launchConnection: LaunchConnection = data.launches;
   const launches = launchConnection.launches;
 
-  // console.log(launches);
+  console.log(launches);
 
   return (
     <Layout title='Explore'>

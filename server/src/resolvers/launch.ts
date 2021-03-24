@@ -1,4 +1,4 @@
-import { Arg, Resolver, Query, Ctx } from 'type-graphql';
+import { Arg, Resolver, Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { Service } from 'typedi';
@@ -10,6 +10,19 @@ import paginateResults from '../utils/paginateResults';
 import { LaunchesInput } from './types/launch-input';
 import generateBookingInfo from '../utils/generateBookingInfo';
 import filterResults from '../utils/filterResults';
+
+@ObjectType()
+export class FilterOptions {
+  @Field((_type) => [String]!, {
+    description: 'a list of unique departure dates for all launches',
+  })
+  dates: string[];
+
+  @Field((_type) => [String]!, {
+    description: 'a list of unique departure destinations for all launches',
+  })
+  destinations: string[];
+}
 
 @Resolver()
 @Service()
@@ -58,5 +71,39 @@ export class LaunchResolver {
           allLaunches[allLaunches.length - 1].cursor
         : false,
     };
+  }
+
+  @Query(() => FilterOptions)
+  async filterOptions(@Ctx() { dataSources }: Context): Promise<FilterOptions> {
+    const allLaunches: Launch[] = await dataSources.launchAPI.getAllLaunches();
+    let launches = await generateBookingInfo(allLaunches, this.seatRepository);
+
+    const destinations: string[] = [];
+    const destinationsSet = new Set<string>();
+    const dates: string[] = [];
+    const datesSet = new Set<string>();
+
+    launches.forEach((launch) => {
+      if (launch.destination && !destinationsSet.has(launch.destination)) {
+        destinations.push(launch.destination);
+      }
+
+      if (launch.destination) {
+        destinationsSet.add(launch.destination);
+      }
+
+      if (
+        launch.departureDate &&
+        !datesSet.has(launch.departureDate.getFullYear().toString())
+      ) {
+        dates.push(launch.departureDate.getFullYear().toString());
+      }
+
+      if (launch.departureDate) {
+        datesSet.add(launch.departureDate.getFullYear().toString());
+      }
+    });
+
+    return { dates, destinations };
   }
 }
