@@ -21,7 +21,7 @@ const main = async () => {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: true,
-    synchronize: false, //entities will be synced with database every time the app is ran
+    synchronize: true, //entities will be synced with database every time the app is ran
     entities: [LaunchObj, Session, User],
   });
 
