@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 
 import { bookingInfo, defaultBookingInfo, yearIncrement } from '../constants';
 import { Launch } from '../resolvers/types/launch';
-import { Seat } from '../entities/Seat';
+import { Launch as LaunchObj } from '../entities/Launch';
 
 const addYears = (dt: Date, numYears: number) => {
   return new Date(dt.setFullYear(dt.getFullYear() + numYears));
@@ -10,7 +10,7 @@ const addYears = (dt: Date, numYears: number) => {
 
 const generateBookingInfo = async (
   launches: Launch[],
-  seatRepository: Repository<Seat>
+  seatRepository: Repository<LaunchObj>
 ) => {
   for (const launch of launches) {
     let startDate = launch.departureDate
@@ -40,7 +40,7 @@ const generateBookingInfo = async (
     let seat = await seatRepository.findOne({ where: { id: launch.id } });
 
     if (seat === undefined) {
-      seat = new Seat();
+      seat = new LaunchObj();
       seat.id = launch.id;
       seat.remainingSeats = currBookingInfo.maxNumSeats;
       await seatRepository.save(seat);

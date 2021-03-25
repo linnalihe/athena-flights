@@ -31,13 +31,6 @@ const IndexPage = () => {
           flight to the stars 🚀
         </h1>
         <Form />
-        {/* <label className={classes.input}>From</label>
-        <Input type='text' className={classes.input} />
-        <label className={classes.input}>To</label>
-        <Input className={classes.input} />
-        <label className={classes.input}>Date</label>
-        <Input type='date' className={classes.input} />
-        <Button startIcon={<FlightTakeoff />}>Search</Button> */}
       </div>
     </Layout>
   );

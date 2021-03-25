@@ -57,9 +57,6 @@ const results = () => {
   const launchConnection: LaunchConnection = data.launches;
   const launches = launchConnection.launches;
 
-  console.log(launchConnection);
-  console.log(launchConnection.hasMore);
-
   return (
     <Layout title='Results'>
       <LaunchTilesContainer launches={launches} />

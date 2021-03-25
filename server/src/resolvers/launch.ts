@@ -2,8 +2,7 @@ import { Arg, Resolver, Query, Ctx, ObjectType, Field } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { Service } from 'typedi';
-
-import { Seat } from '../entities/Seat';
+import { Launch as LaunchObj } from '../entities/Launch';
 import { Launch, LaunchConnection } from './types/launch';
 import { Context } from '../types';
 import paginateResults from '../utils/paginateResults';
@@ -28,7 +27,8 @@ export class FilterOptions {
 @Service()
 export class LaunchResolver {
   constructor(
-    @InjectRepository(Seat) private readonly seatRepository: Repository<Seat>
+    @InjectRepository(LaunchObj)
+    private readonly seatRepository: Repository<LaunchObj>
   ) {}
 
   @Query(() => LaunchConnection)

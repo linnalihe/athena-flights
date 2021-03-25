@@ -54,12 +54,13 @@ const NavBar = () => {
   const buttonsContent = [
     { text: 'Home', link: '/' },
     { text: 'Explore', link: '/explore' },
+    { text: 'Profile', link: '/profile' },
     { text: 'Sign In', link: '/api/auth/signin' },
   ];
 
   if (session) {
-    buttonsContent[2].text = 'Sign Out';
-    buttonsContent[2].link = '/api/auth/signout';
+    buttonsContent[3].text = 'Sign Out';
+    buttonsContent[3].link = '/api/auth/signout';
   }
 
   return (

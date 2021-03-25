@@ -5,10 +5,13 @@ import { buildSchema } from 'type-graphql';
 import { createConnection, useContainer } from 'typeorm';
 import { Container } from 'typedi';
 
-import { Seat } from './entities/Seat';
+import { Launch as LaunchObj } from './entities/Launch';
+import { Session } from './entities/Session';
+import { User } from './entities/User';
 
 import { LaunchResolver } from './resolvers/launch';
 import LaunchAPI from './dataSources/launch';
+import { BookingResolver } from './resolvers/booking';
 
 // register 3rd party IOC container
 useContainer(Container);
@@ -18,8 +21,8 @@ const main = async () => {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: true,
-    synchronize: true, //entities will be synced with database every time the app is ran
-    entities: [Seat],
+    synchronize: false, //entities will be synced with database every time the app is ran
+    entities: [LaunchObj, Session, User],
   });
 
   const dataSources = () => ({
@@ -28,7 +31,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [LaunchResolver],
+      resolvers: [LaunchResolver, BookingResolver],
       container: Container,
       validate: false,
     }),

@@ -3,7 +3,7 @@ import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class Seat extends BaseEntity {
+export class Launch extends BaseEntity {
   @Field((_type) => ID)
   @PrimaryColumn({ unique: true })
   id: number;

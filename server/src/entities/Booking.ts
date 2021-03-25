@@ -10,5 +10,5 @@ export class Booking extends BaseEntity {
 
   @Field()
   @PrimaryColumn()
-  seat_id: string;
+  launch_id: string;
 }

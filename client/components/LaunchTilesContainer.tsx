@@ -1,6 +1,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { Launch } from '../interfaces';
 import LaunchTile from './LaunchTile';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +22,11 @@ const LaunchTilesContainer = ({ launches }: { launches: Launch[] }) => {
     <div className={classes.container}>
       {launches &&
         launches.map((launch: Launch) => (
-          <LaunchTile key={launch.id} launch={launch} />
+          <Link href='/booking'>
+            <a>
+              <LaunchTile key={launch.id} launch={launch} />
+            </a>
+          </Link>
         ))}
     </div>
   );
