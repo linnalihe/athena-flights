@@ -39,7 +39,23 @@ function createApolloClient() {
       Query: {
         fields: {
           launches: {
-            keyArgs: ['filter'],
+            keyArgs: false,
+            merge(existing, incoming) {
+              let launches: Reference[] = [];
+              if (existing && existing.launches) {
+                launches = launches.concat(existing.launches);
+              }
+              if (incoming && incoming.launches) {
+                launches = launches.concat(incoming.launches);
+              }
+              return {
+                ...incoming,
+                launches,
+              };
+            },
+          },
+          filteredLaunches: {
+            keyArgs: ['filter', ['destination', 'priorToDate']],
             merge(existing, incoming) {
               let launches: Reference[] = [];
               if (existing && existing.launches) {

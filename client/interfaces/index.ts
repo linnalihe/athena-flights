@@ -12,7 +12,10 @@ export interface Filter {
 export interface LaunchesInput {
   pageSize?: number;
   cursor?: number;
-  filter?: Filter;
+}
+
+export interface FilteredLaunchesInput extends LaunchesInput {
+  filter: Filter;
 }
 
 export interface Mission {
