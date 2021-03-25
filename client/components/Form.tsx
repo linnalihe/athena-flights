@@ -47,14 +47,10 @@ const Form = () => {
     //create the query to the server to get specific destination and date
     //pass results to a results page
     //redirect user to the results page
-    router.push(
-      {
-        pathname: '/results',
-        query: { destination, departDate },
-      },
-      undefined,
-      { shallow: true } // change path without reloading page
-    );
+    router.push({
+      pathname: '/results',
+      query: { destination, departDate },
+    });
   };
 
   return (

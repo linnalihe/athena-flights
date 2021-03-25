@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 
-import { Filter, LaunchConnection, LaunchesInput } from '../interfaces';
-import { GET_LAUNCHES } from '../graphql/queries/getLaunches';
+import { Filter, LaunchConnection, FilteredLaunchesInput } from '../interfaces';
+import { GET_FILTERED_LAUNCHES } from '../graphql/queries/getFilteredLaunches';
 import Layout from '../components/Layout';
 import LaunchTilesContainer from '../components/LaunchTilesContainer';
 import {
@@ -25,7 +25,7 @@ const results = () => {
   const classes = useStyles();
   const router = useRouter();
 
-  const pageSize = 5;
+  const pageSize = 120;
 
   let filter: Filter = {};
   if (
@@ -39,12 +39,13 @@ const results = () => {
     filter.priorToDate = router.query.departDate;
   }
 
-  const launchesInput: LaunchesInput = {
+  const launchesInput: FilteredLaunchesInput = {
     pageSize,
     filter,
   };
 
-  const { data, loading, error, fetchMore } = useQuery(GET_LAUNCHES, {
+  const { data, loading, error, fetchMore } = useQuery(GET_FILTERED_LAUNCHES, {
+    fetchPolicy: 'no-cache',
     variables: { input: launchesInput },
   });
 
@@ -54,14 +55,14 @@ const results = () => {
   if (error) return <Layout>Error: {error.message}</Layout>;
   if (!data) return <Layout>Not found</Layout>;
 
-  const launchConnection: LaunchConnection = data.launches;
+  const launchConnection: LaunchConnection = data.filteredLaunches;
   const launches = launchConnection.launches;
 
   return (
     <Layout title='Results'>
       <LaunchTilesContainer launches={launches} />
-      {data.launches &&
-        data.launches.hasMore &&
+      {data.filteredLaunches &&
+        data.filteredLaunches.hasMore &&
         (isLoadingMore ? (
           <CircularProgress color='primary' className={classes.viewMore} />
         ) : (
@@ -75,7 +76,7 @@ const results = () => {
                 variables: {
                   input: {
                     pageSize,
-                    cursor: data.launches.cursor,
+                    cursor: data.filteredLaunches.cursor,
                     filter,
                   },
                 },

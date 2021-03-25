@@ -28,9 +28,10 @@ export class LaunchesInput {
     description: 'Results will be returned _after_ this cursor',
   })
   cursor?: number;
+}
 
-  @Field({
-    nullable: true,
-  })
-  filter?: Filter;
+@InputType()
+export class FilteredLaunchesInput extends LaunchesInput {
+  @Field()
+  filter: Filter;
 }
