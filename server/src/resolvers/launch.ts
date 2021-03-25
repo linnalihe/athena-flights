@@ -7,7 +7,7 @@ import { Seat } from '../entities/Seat';
 import { Launch, LaunchConnection } from './types/launch';
 import { Context } from '../types';
 import paginateResults from '../utils/paginateResults';
-import { LaunchesInput } from './types/launch-input';
+import { LaunchesInput, FilteredLaunchesInput } from './types/launch-input';
 import generateBookingInfo from '../utils/generateBookingInfo';
 import filterResults from '../utils/filterResults';
 
@@ -37,19 +37,11 @@ export class LaunchResolver {
 
     @Arg('input') launchInput: LaunchesInput
   ): Promise<LaunchConnection> {
-    const { pageSize, cursor, filter } = launchInput;
+    const { pageSize, cursor } = launchInput;
 
     const allLaunches: Launch[] = await dataSources.launchAPI.getAllLaunches();
     let launches = allLaunches;
     let lastLaunch = allLaunches[allLaunches.length - 1];
-
-    // filterResults needs launch.destination and launch.departureDate to work,
-    // so those parameters need to be generated beforehand with generateBookingInfo
-    if (typeof filter !== 'undefined') {
-      launches = await generateBookingInfo(launches, this.seatRepository);
-      launches = filterResults(launches, filter);
-      lastLaunch = launches[launches.length - 1];
-    }
 
     launches = paginateResults({
       cursor,
@@ -57,11 +49,7 @@ export class LaunchResolver {
       results: launches,
     });
 
-    // if no filter is given, we can generate booking info for only paginated launches
-    // instead of all launches
-    if (typeof filter === 'undefined') {
-      launches = await generateBookingInfo(launches, this.seatRepository);
-    }
+    launches = await generateBookingInfo(launches, this.seatRepository);
 
     return {
       launches,
@@ -106,5 +94,39 @@ export class LaunchResolver {
     });
 
     return { dates, destinations };
+  }
+
+  @Query(() => LaunchConnection)
+  async filteredLaunches(
+    @Ctx() { dataSources }: Context,
+
+    @Arg('input') launchInput: FilteredLaunchesInput
+  ): Promise<LaunchConnection> {
+    const { pageSize, cursor, filter } = launchInput;
+
+    const allLaunches: Launch[] = await dataSources.launchAPI.getAllLaunches();
+    let launches = allLaunches;
+
+    // filterResults needs launch.destination and launch.departureDate to work,
+    // so those parameters need to be generated beforehand with generateBookingInfo
+    launches = await generateBookingInfo(launches, this.seatRepository);
+    launches = filterResults(launches, filter);
+    let lastLaunch = launches[launches.length - 1];
+
+    launches = paginateResults({
+      cursor,
+      pageSize,
+      results: launches,
+    });
+
+    return {
+      launches,
+      cursor: launches.length ? launches[launches.length - 1].cursor : null,
+      // if the cursor of the end of the paginated results is the same as the
+      // last item in _all_ results, then there are no more results after this
+      hasMore: launches.length
+        ? launches[launches.length - 1].cursor !== lastLaunch.cursor
+        : false,
+    };
   }
 }
