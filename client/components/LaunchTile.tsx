@@ -96,12 +96,7 @@ const LaunchTile = ({ launch }: { launch: Launch }) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby='Launch Details'>
         <Box className={classes.popup}>
           <div className={classes.closeButton}>
             <IconButton aria-label='close popup' onClick={handleClose}>
