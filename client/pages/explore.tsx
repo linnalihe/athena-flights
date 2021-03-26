@@ -35,7 +35,6 @@ const Explore = () => {
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  console.log(data);
   if (loading) return <Layout>Loading...</Layout>;
   if (error) return <Layout>Error: {error.message}</Layout>;
   if (!data) return <Layout>Not found</Layout>;

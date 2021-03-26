@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CANCEL_BOOKING } from '../graphql/mutations/cancelBooking';
+import { BookingInput } from '../interfaces';
+import Router from 'next/router';
 
 import {
-  Box,
   Card,
+  CardActions,
   CardActionArea,
   CardContent,
   CardMedia,
@@ -50,20 +51,27 @@ const BookedTile = ({
   launch: Launch;
   session: Session;
 }) => {
+  if (!session || !launch) {
+    Router.reload();
+    return <></>;
+  }
+  const [cancelBooking] = useMutation(CANCEL_BOOKING);
+
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const accessToken = session.accessToken;
+  const launchID = parseInt(launch.id);
+
+  const bookingInput: BookingInput = {
+    accessToken,
+    launchID,
+  };
 
   const handleOnCancel = () => {
-    if (!session) {
-      return;
-    }
-    const { data, loading, error } = useMutation(CANCEL_BOOKING, {
-      variables: { accessToken: session.accessToken, launchID: launch.id },
+    cancelBooking({
+      variables: { input: bookingInput },
     });
 
-    return data;
+    Router.reload();
   };
 
   let img: string;
@@ -101,11 +109,9 @@ const BookedTile = ({
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActionArea>
-        <Button size='medium' onClick={handleOnCancel}>
-          Cancel
-        </Button>
-      </CardActionArea>
+      <CardActions>
+        <Button onClick={handleOnCancel}>Cancel</Button>
+      </CardActions>
     </Card>
   );
 };

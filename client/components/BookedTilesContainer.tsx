@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { Launch } from '../interfaces';
 import BookedTile from './BookedTile';
-import Link from 'next/link';
 import { Session } from 'next-auth';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,7 +28,7 @@ const BookedTilesContainer = ({
     <div className={classes.container}>
       {launches &&
         launches.map((launch: Launch) => (
-          <BookedTile launch={launch} session={session} />
+          <BookedTile launch={launch} session={session} key={launch.id} />
         ))}
     </div>
   );

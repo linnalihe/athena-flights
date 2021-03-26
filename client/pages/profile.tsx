@@ -9,21 +9,15 @@ import BookedTilesContainer from '../components/BookedTilesContainer';
 const profile = () => {
   const [session] = useSession();
 
-  if (!session) {
-    return (
-      <Layout>
-        <p>This is the profile page. Please sign in</p>
-        <p>
-          Please{' '}
-          <Link href='/api/auth/signin'>
-            <a>Sign In</a>
-          </Link>
-        </p>
-      </Layout>
-    );
+  let accessToken: string;
+  if (session && session.accessToken) {
+    accessToken = session.accessToken;
+  } else {
+    accessToken = '';
   }
+
   const { data, loading, error } = useQuery(GET_BOOKING, {
-    variables: { accessToken: session.accessToken },
+    variables: { accessToken },
   });
 
   if (loading) return <Layout>Loading...</Layout>;
@@ -32,10 +26,25 @@ const profile = () => {
 
   return (
     <Layout>
-      <p>Hello {session.user.name}.</p>
-      <p>Welcome to your profile page.</p>
-      <p>Here are your bookings:</p>
-      <BookedTilesContainer launches={data.getBookings} session={session} />
+      {session ? (
+        <>
+          {' '}
+          <p>Hello {session.user.name}.</p>
+          <p>Welcome to your profile page.</p>
+          <p>Here are your bookings:</p>
+          <BookedTilesContainer launches={data.getBookings} session={session} />
+        </>
+      ) : (
+        <>
+          <p>This is the profile page.</p>
+          <p>
+            Please{' '}
+            <Link href='/api/auth/signin'>
+              <a>Sign In</a>
+            </Link>
+          </p>
+        </>
+      )}
     </Layout>
   );
 };
