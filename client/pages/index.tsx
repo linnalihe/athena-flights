@@ -24,7 +24,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <Canvas />
+      {/* <Canvas /> */}
       <div className={classes.container}>
         <h1>
           {session && `Hi, ${session.user.name.split(' ')[0]}!`} Book your

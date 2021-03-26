@@ -103,9 +103,18 @@ export class BookingResolver {
     if (currentlyBookedLaunches.indexOf(launchID) != -1)
       return { success: false };
 
+    // verify that there are available seats on that launch
+    let seat = await this.seatRepository.findOne({ where: { id: launchID } });
+    if (!seat || seat.remainingSeats <= 0) {
+      return { success: false };
+    }
+
     currentlyBookedLaunches.push(launchID);
     user.booked_launches = currentlyBookedLaunches;
     await this.userRepository.save(user);
+
+    seat.remainingSeats -= 1;
+    await this.seatRepository.save(seat);
 
     return { success: true };
   }
@@ -132,9 +141,18 @@ export class BookingResolver {
 
     user.booked_launches = user.booked_launches.filter((id) => id !== launchID);
 
+    let seat: LaunchObj | undefined;
+
+    seat = await this.seatRepository.findOne({ where: { id: launchID } });
+    if (seat === undefined) {
+      return { success: false };
+    }
+
     // verify that the given launchID was deleted from the booking array
     if (user.booked_launches.indexOf(launchID) === -1) {
+      seat.remainingSeats += 1;
       await this.userRepository.save(user);
+      await this.seatRepository.save(seat);
       return { success: true };
     }
 

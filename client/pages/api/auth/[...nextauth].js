@@ -2,9 +2,6 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import Adapters from 'next-auth/providers';
 
-console.log(process.env.GITHUB_CLIENT_ID);
-console.log(process.env.DATABASE_URL);
-
 const options = {
   providers: [
     Providers.GitHub({

@@ -43,8 +43,6 @@ const Explore = () => {
   const launchConnection: LaunchConnection = data.launches;
   const launches = launchConnection.launches;
 
-  console.log(launches);
-
   return (
     <Layout title='Explore'>
       <LaunchTilesContainer launches={launches} />
