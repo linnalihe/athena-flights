@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import { useQuery } from '@apollo/client';
 import { GET_BOOKING } from '../graphql/queries/getBooking';
 import BookedTilesContainer from '../components/BookedTilesContainer';
+import Loading from '../components/loading/Loading';
 
 const profile = () => {
   const [session] = useSession();
@@ -20,7 +21,12 @@ const profile = () => {
     variables: { accessToken },
   });
 
-  if (loading) return <Layout>Loading...</Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
   if (error) return <Layout>Error: {error.message}</Layout>;
   if (!data) return <Layout>Not found</Layout>;
 

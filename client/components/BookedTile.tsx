@@ -110,7 +110,7 @@ const BookedTile = ({
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button variant='contained' color='primary' onClick={handleOnCancel}>
+        <Button variant='contained' color='secondary' onClick={handleOnCancel}>
           Cancel
         </Button>
       </CardActions>

@@ -12,7 +12,10 @@ import {
   FormControl,
   Theme,
   Backdrop,
+  Snackbar,
+  IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Layout from '../components/Layout';
 import { CREATE_BOOKING } from '../graphql/mutations/createBooking';
@@ -44,6 +47,13 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       maxWidth: theme.breakpoints.values.mobile,
     },
+    snackbar: {
+      backgroundColor: theme.palette.primary.main,
+      color: 'white',
+    },
+    snackbarButton: {
+      color: theme.palette.secondary.main,
+    },
   })
 );
 
@@ -53,6 +63,7 @@ const booking = () => {
   const router = useRouter();
   const [createBooking] = useMutation(CREATE_BOOKING);
   const [open, setOpen] = useState(false);
+  const [snackbarIsOpen, setSnackbarIsOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
@@ -74,6 +85,18 @@ const booking = () => {
       },
     });
     handleClose();
+    setSnackbarIsOpen(true);
+  };
+
+  const handleCloseSnackbar = (
+    _event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarIsOpen(false);
   };
 
   return (
@@ -109,6 +132,41 @@ const booking = () => {
         >
           <img src='/rocket-loading.gif' className={classes.loadingImg} />
         </Backdrop>
+        <Snackbar
+          ContentProps={{
+            classes: {
+              root: classes.snackbar,
+            },
+          }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={snackbarIsOpen}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+          message={`Success!`}
+          action={
+            <>
+              <Button
+                className={classes.snackbarButton}
+                size='small'
+                onClick={handleCloseSnackbar}
+                href='/profile'
+              >
+                VIEW BOOKINGS
+              </Button>
+              <IconButton
+                size='small'
+                aria-label='close'
+                color='inherit'
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize='small' />
+              </IconButton>
+            </>
+          }
+        />
       </div>
     </Layout>
   );

@@ -12,6 +12,7 @@ import {
   createStyles,
   makeStyles,
 } from '@material-ui/core';
+import Loading from '../components/loading/Loading';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -51,7 +52,12 @@ const results = () => {
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  if (loading) return <Layout>Loading...</Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <Loading />{' '}
+      </Layout>
+    );
   if (error) return <Layout>Error: {error.message}</Layout>;
   if (!data) return <Layout>Not found</Layout>;
 

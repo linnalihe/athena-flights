@@ -17,6 +17,7 @@ const useStyles = makeStyles(() =>
       border: '1px solid gray',
       color: 'white',
       backgroundColor: 'rgba(0,0,0,.5)',
+      minWidth: '500px',
     },
   })
 );
@@ -34,8 +35,8 @@ const IndexPage = () => {
     <Layout img={'vincentiu-solomon-ln5drpv_ImI-unsplash.jpg'}>
       <div className={classes.container}>
         <h1>
-          {session && `Hi, ${session.user.name.split(' ')[0]}!`} Book your
-          flight to the stars 🚀
+          {session && `Hi, ${session.user.name.split(' ')[0]}!`} Find your next
+          adventure 🚀
         </h1>
         <Form data={data} />
       </div>
