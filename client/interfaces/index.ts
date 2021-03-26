@@ -47,3 +47,8 @@ export interface LaunchConnection {
   hasMore: boolean;
   launches: Launch[];
 }
+
+export interface BookingInput {
+  accessToken: string;
+  launchID: number;
+}

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const NavBar = () => {
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const classes = useStyles();
 
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
