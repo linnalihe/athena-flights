@@ -59,7 +59,7 @@ const BookedTile = ({
 
   const classes = useStyles();
   const accessToken = session.accessToken;
-  const launchID = parseInt(launch.id);
+  const launchID = launch.id ? parseInt(launch.id) : undefined;
 
   const bookingInput: BookingInput = {
     accessToken,
@@ -110,7 +110,9 @@ const BookedTile = ({
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button onClick={handleOnCancel}>Cancel</Button>
+        <Button variant='contained' color='primary' onClick={handleOnCancel}>
+          Cancel
+        </Button>
       </CardActions>
     </Card>
   );

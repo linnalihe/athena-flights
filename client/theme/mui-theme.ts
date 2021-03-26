@@ -35,6 +35,12 @@ const muiTheme = createMuiTheme({
   },
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#7E34AF',
+    },
+    secondary: {
+      main: '#F07158',
+    },
   },
 });
 

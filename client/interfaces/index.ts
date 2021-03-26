@@ -49,6 +49,6 @@ export interface LaunchConnection {
 }
 
 export interface BookingInput {
-  accessToken: string;
-  launchID: number;
+  accessToken: string | undefined;
+  launchID: number | undefined;
 }

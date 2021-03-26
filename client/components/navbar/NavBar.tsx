@@ -7,7 +7,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import NavBarButtons from './NavBarButtons';
 import { DrawerContext } from '../../ contexts';
 import Drawer from './Drawer';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      [theme.breakpoints.up('mobile')]: {
+        paddingRight: '25px',
+        paddingLeft: '25px',
+      },
     },
     logo: {
       color: 'black',
@@ -34,6 +38,14 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       justifyContent: 'flex-start',
       alignItems: 'center',
+    },
+    anchorElem: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    logoImg: {
+      width: '40px',
+      height: '40px',
     },
     logoText: {
       color: 'white',
@@ -69,7 +81,10 @@ const NavBar = () => {
         <Toolbar className={classes.toolbar}>
           <div className={classes.logo}>
             <Link href='/'>
-              <a className={classes.logoText}>Athena Flights</a>
+              <a className={classes.anchorElem}>
+                <img src='/logo.png' className={classes.logoImg} />
+                <span className={classes.logoText}>Athena Flights</span>
+              </a>
             </Link>
           </div>
           <NavBarButtons buttonsContent={buttonsContent} />

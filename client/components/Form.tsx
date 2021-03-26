@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import FlightTakeoff from '@material-ui/icons/FlightTakeoff';
 import {
   createStyles,
   makeStyles,
@@ -7,8 +6,6 @@ import {
   MenuItem,
   Select,
 } from '@material-ui/core';
-import { useQuery } from '@apollo/client';
-import { GET_FILTERS } from '../graphql/queries/getFilters';
 import { useRouter } from 'next/router';
 
 const useStyles = makeStyles(() =>
@@ -23,16 +20,11 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Form = () => {
+const Form = ({ data }: { data: any }) => {
   const classes = useStyles();
   const [destination, setDestination] = useState('');
   const [departDate, setDepartDate] = useState('');
   const router = useRouter();
-
-  const { data, loading, error } = useQuery(GET_FILTERS);
-  if (loading) return 'Loading...';
-  if (error) return `Error: ${error.message}`;
-  if (!data) return 'Not found';
 
   const handleChangeDest = (e: React.ChangeEvent<{ value: string }>) => {
     setDestination(e.target.value);
@@ -81,7 +73,7 @@ const Form = () => {
           ))}
         </Select>
 
-        <Button startIcon={<FlightTakeoff />} type='submit'>
+        <Button variant='contained' type='submit'>
           Search
         </Button>
       </form>

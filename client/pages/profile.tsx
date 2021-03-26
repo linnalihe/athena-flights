@@ -25,7 +25,7 @@ const profile = () => {
   if (!data) return <Layout>Not found</Layout>;
 
   return (
-    <Layout>
+    <Layout img={'spacex--p-KCm6xB9I-unsplash.jpg'}>
       {session ? (
         <>
           {' '}
