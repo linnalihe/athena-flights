@@ -35,8 +35,11 @@ const IndexPage = () => {
     <Layout img={'vincentiu-solomon-ln5drpv_ImI-unsplash.jpg'}>
       <div className={classes.container}>
         <h1>
-          {session && `Hi, ${session.user.name.split(' ')[0]}!`} Find your next
-          adventure 🚀
+          {session &&
+            session.user &&
+            session.user.name &&
+            `Hi, ${session.user.name.split(' ')[0]}!`}{' '}
+          Find your next adventure 🚀
         </h1>
         <Form data={data} />
       </div>
