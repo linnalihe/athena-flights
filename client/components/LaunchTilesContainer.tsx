@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { Launch } from '../interfaces';
 import LaunchTile from './LaunchTile';
-import Link from 'next/link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
