@@ -55,7 +55,17 @@ const options = {
   //   secret: process.env.JWT_SECRET,
   // },
   // debug: true,
-  database: process.env.DATABASE_URL + '/sslmode=require',
+  // database: process.env.DATABASE_URL + '/sslmode=require',
+  database: {
+    type: 'postgres',
+    url: process.env.DATABASE_URL,
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  },
   // adapter: Adapters.Default({
   //   type: 'pg',
   //   database: process.env.DATABASE_URL,
