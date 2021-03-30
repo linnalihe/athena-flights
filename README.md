@@ -137,10 +137,10 @@ $ npm run dev
 
 #### 2. Install dependencies
 ```
-$ yarn install
+$ npm install
 ```
 
-#### 3. Create an OAuth apps for Facebook, GitHub, and [Recurse Center](https://www.recurse.com/settings/apps). Set the redirect URI to `http://localhost:3000/api/auth/callback/recurse`.  Save the IDs and secrets for step 5.
+#### 3. Create an OAuth apps for Facebook, GitHub, and [Recurse Center](https://www.recurse.com/settings/apps). If applicable, set the redirect URI to `http://localhost:3000/api/auth/callback/<nextauth-app-id>` (e.g. the `nextauth-app-id` for Recurse Oauth would be "recurse", which is set in [client/pages/api/auth/\[...nextauth\].js](https://github.com/linnal86/athena-flights/blob/2a3a89125dfaed46b5abd8cc1f12d97c3b6e3d0c/client/pages/api/auth/%5B...nextauth%5D.js#L20)).  Save the IDs and secrets for step 5.
 
 #### 5. Create a `.env.local` file with the following variables
 ```
@@ -165,5 +165,5 @@ DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<database-name>
 
 #### 6. Run the client
 ```
-$ yarn dev
+$ npm run dev
 ```
