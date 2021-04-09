@@ -11,7 +11,6 @@ A fantasy flight booking web app that allows users to reserve seats on future ro
 
 ### Back-end
 * [Node.js](https://nodejs.org/): JavaScript runtime environment
-* [Express.js](https://expressjs.com/): framework used to create a GraphQL endpoint
 * [GraphQL](https://graphql.org/): data query and manipulation language
 * [Apollo Server](https://www.apollographql.com/docs/apollo-server/): GraphQL server
 * [TypeORM](https://typeorm.io/): object relational mapping package to work with PostgreSQL
